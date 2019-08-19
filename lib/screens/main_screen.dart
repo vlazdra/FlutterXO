@@ -38,32 +38,95 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: _onWillPop,
-      child: Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+        onWillPop: _onWillPop,
+        child: Scaffold(
+            appBar: AppBar(
+              title: Text('Flutter XO'),
+            ),
+            body: Column(
               children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.all(Radius.circular(5))),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      'HOMEEEEE',
-                      style: TextStyle(fontSize: 32, color: Colors.white),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Container(
+                    constraints: BoxConstraints(minWidth: double.infinity),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                        color: Colors.blue),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Text(
+                          'Pick one option, create or join!',
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
+                      ),
                     ),
                   ),
                 ),
+                Expanded(
+                    child: Container(
+                  constraints: BoxConstraints(
+                    minWidth: double.infinity,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Material(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.all(Radius.circular(4)),
+                            elevation: 4,
+                            child: InkWell(
+                              onTap: () => {print('aa')},
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                                child: Text(
+                                  'Create a game',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Material(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.all(Radius.circular(4)),
+                            elevation: 4,
+                            child: InkWell(
+                              onTap: () => {print('aa')},
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                                child: Text(
+                                  'Join a game',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ))
               ],
-            ),
-          ],
-        ),
-      ),
-    );
+            )));
   }
 }
