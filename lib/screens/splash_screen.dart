@@ -17,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 2), () => {_checkNextScreen()});
+    Future.delayed(Duration(seconds: 2), () => _checkNextScreen());
   }
 
   void _checkNextScreen() async {

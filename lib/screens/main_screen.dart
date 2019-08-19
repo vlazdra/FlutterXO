@@ -45,8 +45,7 @@ class _MainScreenState extends State<MainScreen> {
               title: Text('Flutter XO'),
               actions: <Widget>[
                 IconButton(
-                  onPressed: () =>
-                      {Navigator.of(context).push(ProfileOverlay())},
+                  onPressed: () => Navigator.of(context).push(ProfileOverlay()),
                   icon: ClipRRect(
                     borderRadius: BorderRadius.circular(50),
                     child: _loggedInUserImage != null
@@ -94,7 +93,7 @@ class _MainScreenState extends State<MainScreen> {
                             borderRadius: BorderRadius.all(Radius.circular(4)),
                             elevation: 4,
                             child: InkWell(
-                              onTap: () => {print('aa')},
+                              onTap: () => print('aa'),
                               child: Padding(
                                 padding:
                                     const EdgeInsets.fromLTRB(16, 8, 16, 8),
@@ -121,7 +120,7 @@ class _MainScreenState extends State<MainScreen> {
                             borderRadius: BorderRadius.all(Radius.circular(4)),
                             elevation: 4,
                             child: InkWell(
-                              onTap: () => {print('aa')},
+                              onTap: () => print('aa'),
                               child: Padding(
                                 padding:
                                     const EdgeInsets.fromLTRB(16, 8, 16, 8),

@@ -59,26 +59,29 @@ class _ProfileScreen extends State<ProfileScreen> {
     _fetchUserImage();
   }
 
-  void _fetchUserImage() async {
-    FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
-    setState(() {
-      _imageURL = firebaseUser.photoUrl;
-      _displayName = firebaseUser.displayName;
-      _email = firebaseUser.email;
-    });
+  void _fetchUserImage() {
+    FirebaseAuth.instance.currentUser().then((firebaseUser) {
+      setState(() {
+        _imageURL = firebaseUser.photoUrl;
+        _displayName = firebaseUser.displayName;
+        _email = firebaseUser.email;
+      });
+    }).catchError((error) => print("ERROR: $error"));
   }
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
+        width: 300,
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-                color: Colors.black.withAlpha(90),
-                spreadRadius: 0.5,
-                blurRadius: 5.0,
-                offset: Offset(1.5, 2))
+              color: Colors.black.withAlpha(90),
+              spreadRadius: 0.5,
+              blurRadius: 5.0,
+              offset: Offset(1.5, 2),
+            )
           ],
           borderRadius: BorderRadius.circular(8),
           color: Colors.white,
@@ -97,25 +100,41 @@ class _ProfileScreen extends State<ProfileScreen> {
                       ),
               ),
               SizedBox(
-                height: 32,
+                height: 16,
               ),
               Text(
                 _displayName != null ? _displayName : 'n/a',
-                style: TextStyle(color: Colors.black, fontSize: 32.0),
+                style: TextStyle(color: Colors.black, fontSize: 26.0),
               ),
               Text(
                 _email != null ? _email : 'n/a',
-                style: TextStyle(color: Colors.black, fontSize: 26.0),
+                style: TextStyle(color: Colors.black, fontSize: 18.0),
               ),
               SizedBox(
-                height: 32,
+                height: 16,
               ),
-              FlatButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text(
-                  'Close',
-                  style: TextStyle(color: Colors.blue),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  FlatButton(
+                    onPressed: () {
+                      FirebaseAuth.instance.signOut();
+                      Navigator.pop(context);
+                      Navigator.pushReplacementNamed(context, '/login');
+                    },
+                    child: Text(
+                      'Logout',
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                  FlatButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(
+                      'Close',
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

@@ -20,7 +20,7 @@ class _LoginScreen extends State<LoginScreen> {
     super.initState();
   }
 
-  Future<FirebaseUser> _handleSignIn() async {
+  void _handleSignIn() async {
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
@@ -30,15 +30,10 @@ class _LoginScreen extends State<LoginScreen> {
       idToken: googleAuth.idToken,
     );
 
-    final FirebaseUser user =
-        (await _auth.signInWithCredential(credential)).user;
-    print("signed in " + user.displayName);
-    if (user != null) {
-      Navigator.pushReplacementNamed(context, '/main');
-    } else {
-      print('ERROR');
-    }
-    return user;
+    _auth
+        .signInWithCredential(credential)
+        .then((_) => Navigator.pushReplacementNamed(context, '/main'))
+        .catchError((error) => print('ERROR: $error'));
   }
 
   @override
@@ -75,7 +70,7 @@ class _LoginScreen extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               GoogleSignInButton(
-                onPressed: () => {_handleSignIn()},
+                onPressed: () => _handleSignIn(),
                 darkMode: true,
               ),
             ],
