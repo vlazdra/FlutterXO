@@ -1,7 +1,46 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _LoginScreen();
+  }
+}
+
+class _LoginScreen extends State<LoginScreen> {
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<FirebaseUser> _handleSignIn() async {
+    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    final FirebaseUser user =
+        (await _auth.signInWithCredential(credential)).user;
+    print("signed in " + user.displayName);
+    if (user != null) {
+      Navigator.pushReplacementNamed(context, '/main');
+    } else {
+      print('ERROR');
+    }
+    return user;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,23 +66,18 @@ class LoginScreen extends StatelessWidget {
             ],
           ),
           SizedBox(
-            height: 50,
+            height: 16,
+          ),
+          SizedBox(
+            height: 16,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              RaisedButton(
-                color: Colors.blue,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                  child: Text(
-                    'Home',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                onPressed: () =>
-                    Navigator.pushReplacementNamed(context, '/main'),
-              )
+              GoogleSignInButton(
+                onPressed: () => {_handleSignIn()},
+                darkMode: true,
+              ),
             ],
           )
         ],

@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_xo/dialogs/alert_dialog.dart';
+import 'package:flutter_xo/dialogs/profile_overlay.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -9,29 +12,27 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  String _loggedInUserImage;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _fetchUserImage();
+  }
+
+  void _fetchUserImage() async {
+    FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
+    setState(() {
+      _loggedInUserImage = firebaseUser.photoUrl;
+    });
+  }
+
   Future<bool> _onWillPop() {
     return showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            title: Text('Are you sure you want to exit?'),
-            actions: <Widget>[
-              RaisedButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: Text(
-                  'NO',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              RaisedButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: Text(
-                  'YES',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ],
-          );
+          return MyCustomAlertDialog.getForBackPressValidation(context);
         });
   }
 
@@ -42,6 +43,18 @@ class _MainScreenState extends State<MainScreen> {
         child: Scaffold(
             appBar: AppBar(
               title: Text('Flutter XO'),
+              actions: <Widget>[
+                IconButton(
+                  onPressed: () =>
+                      {Navigator.of(context).push(ProfileOverlay())},
+                  icon: ClipRRect(
+                    borderRadius: BorderRadius.circular(50),
+                    child: _loggedInUserImage != null
+                        ? Image.network(_loggedInUserImage)
+                        : Container(),
+                  ),
+                )
+              ],
             ),
             body: Column(
               children: <Widget>[
@@ -50,8 +63,9 @@ class _MainScreenState extends State<MainScreen> {
                   child: Container(
                     constraints: BoxConstraints(minWidth: double.infinity),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(4)),
-                        color: Colors.blue),
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
+                      color: Colors.blue,
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Center(
