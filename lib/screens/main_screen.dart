@@ -23,9 +23,7 @@ class _MainScreenState extends State<MainScreen> {
 
   void _fetchUserImage() async {
     FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
-    setState(() {
-      _loggedInUserImage = firebaseUser.photoUrl;
-    });
+    setState(() => _loggedInUserImage = firebaseUser.photoUrl);
   }
 
   Future<bool> _onWillPop() {
