@@ -5,6 +5,7 @@ import 'package:flutter_xo/screens/main_screen.dart';
 import 'package:flutter_xo/screens/splash_screen.dart';
 
 void main() {
+  Crashlytics.instance.enableInDevMode = true;
   // Pass all uncaught errors from the framework to Crashlytics.
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
 
